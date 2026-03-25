@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hiring Maze: 90s Arcade Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background: #1a1a1a; color: #fff; font-family: 'Press Start 2P', cursive;
+            text-align: center; margin: 0; display: flex; flex-direction: column; 
+            justify-content: center; height: 100vh; overflow: hidden;
+        }
+
+        #header-container { margin-bottom: 30px; }
+        h1 { font-size: 24px; color: #00ff00; text-shadow: 3px 3px #ff00ff; }
+        p.subtitle { font-size: 14px; color: #ffff; margin-top: 14px; line-height: 1.5; }
+
+        #arena { 
+            position: relative; width: 800px; height: 250px; 
+            margin: 0 auto; border-bottom: 6px solid #00ff00; 
+        }
+
+        .character { 
+            position: absolute; bottom: 0; width: 160px; height: 200px; 
+            background-size: contain; background-repeat: no-repeat; 
+            background-position: bottom center; transition: all 0.3s ease-out;
+            z-index: 1;
+        }
+        
+        #left-char { left: 50px; }
+        #right-char { 
+            right: 50px; 
+            transform: scaleX(-1);
+        }     
+
+        #cards-container { 
+            display: flex; justify-content: center; gap: 40px; 
+            width: 1000px; margin: 40px auto 0; 
+        }
+        .candidate-card { 
+            border: 4px solid #00ff00; padding: 20px; width: 400px; 
+            cursor: pointer; background: #000; box-shadow: 0 0 15px #00ff00;
+            display: flex; flex-direction: column; justify-content: flex-start;
+            transition: 0.2s;
+        }
+        .candidate-card:hover { background: #ff00ff; transform: translateY(-5px); }
+        
+        h2 { font-size: 12px; color: #00ff00; margin-bottom: 16px; min-height: 31px; }
+        .desc { font-size: 10px; line-height: 2; color: #00ff00; text-align: left; }
+
+        .attack-effect { 
+            filter: brightness(1.2) !important; 
+            z-index: 10 !important; 
+        }
+        
+        .defeat-effect { 
+            opacity: 0; 
+            transform: translateY(-50px) rotate(45deg) scale(0.5) !important; 
+            filter: sepia(1) saturate(10) hue-rotate(-50deg) !important;
+            transition: 0.6s ease-in;
+        }
+
+        #final-screen { 
+            display: none; border: 10px double #ff00ff; padding: 50px; 
+            width: 700px; margin: 0 auto; background: #000; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-layout">
+        <div id="header-container">
+            <h1 id="round-title">QUARTER-FINALS</h1>
+            <p class="subtitle">Which candidate is a safer bet for the next round?</p>
+        </div>
+
+        <div id="arena">
+            <div id="left-char" class="character"></div>
+            <div id="right-char" class="character"></div>
+        </div>
+
+        <div id="cards-container">
+            <div id="left-card" class="candidate-card" onclick="select('left')" onmouseover="hoverChar('left', true)" onmouseout="hoverChar('left', false)">
+                <h2 id="left-name">Loading...</h2>
+                <div id="left-desc" class="desc"></div>
+            </div>
+            <div id="right-card" class="candidate-card" onclick="select('right')" onmouseover="hoverChar('right', true)" onmouseout="hoverChar('right', false)">
+                <h2 id="right-name">Loading...</h2>
+                <div id="right-desc" class="desc"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="final-screen">
+        <h1 style="color: #00ff00;">🏆 TOURNAMENT CHAMPION 🏆</h1>
+        <h2 id="winner-name" style="font-size: 20px; margin-top: 20px;"></h2>
+        <p style="font-size: 10px; margin: 30px 0; line-height: 1.6;">The recruiter has spoken.<br>This profile is the ultimate survivor.</p>
+        <button onclick="location.reload()" style="font-family:'Press Start 2P'; padding:15px; cursor:pointer; background:#00ff00; border:none; color: #000;">PLAY AGAIN</button>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxlGvKgLbutYrPnQQrlTkMAvB1n2RjNyKt5zN8vwTenzuxt6dCBDtQaucE2gQMsdRZv/exec';
+
+        const candidates = [
+            { name: "The Gap Strategist", desc: "12+ yrs exp, 3-yr career break (relocation/parental). Brings deep strategic thinking and resilience.", img_idle: "Ancient_Idle_MiniCavalierMan.gif", img_attack: "Ancient_Attack1_MiniCavalierMan.gif", img_walk: "Ancient_Walk_MiniCavalierMan.gif" },
+            { name: "The Continuous Mid-Weight", desc: "5 yrs uninterrupted stable experience. High loyalty and consistency within established processes.", img_idle: "Common_Idle_MiniCavalierMan.gif", img_attack: "Common_Attack1_MiniCavalierMan.gif", img_walk: "Common_Walk_MiniCavalierMan.gif" },
+            { name: "The Award-Winner", desc: "Multiple national awards, former agency founder. Strong creative vision and leadership skills.", img_idle: "Epic_Idle_MiniCavalierMan.gif", img_attack: "Epic_Attack1_MiniCavalierMan.gif", img_walk: "Epic_Walk_MiniCavalierMan.gif" },
+            { name: "The Technical Tool-Master", desc: "Expert mastery of advanced technical tools and software. High execution speed and precision.", img_idle: "Epic_2_Idle_MiniCavalierMan.gif", img_attack: "Epic_2_Attack1_MiniCavalierMan.gif", img_walk: "Epic_2_Walk_MiniCavalierMan.gif" },
+            { name: "The Corporate Veteran", desc: "Specialist in large-scale systems, operational SOPs, and international corporate networks.", img_idle: "Legendary_Idle_MiniCavalierMan.gif", img_attack: "Legendary_Attack1_MiniCavalierMan.gif", img_walk: "Legendary_Walk_MiniCavalierMan.gif" },
+            { name: "The AI Visionary", desc: "Expert in AI-powered tools and future work models. Focused on high-tech integration and innovation.", img_idle: "Legendary_2_Idle_MiniCavalierMan.gif", img_attack: "Legendary_2_Attack1_MiniCavalierMan.gif", img_walk: "Legendary_2_Walk_MiniCavalierMan.gif" },
+            { name: "The Hybrid Strategist", desc: "Versatile profile combining copywriting, brand strategy, and design disciplines.", img_idle: "Rare_Idle_MiniCavalierMan.gif", img_attack: "Rare_Attack1_MiniCavalierMan.gif", img_walk: "Rare_Walk_MiniCavalierMan.gif" },
+            { name: "The Local Junior", desc: "2 yrs exp, native language, deep understanding of local market. A safe entry-level execution profile.", img_idle: "Uncommon_Idle_MiniCavalierMan.gif", img_attack: "Uncommon_Attack1_MiniCavalierMan.gif", img_walk: "Uncommon_Walk_MiniCavalierMan.gif" }
+        ];
+
+        let currentRound = [...candidates].sort(() => 0.5 - Math.random());
+        let nextRound = [];
+        let index = 0;
+        let roundNames = { 8: "QUARTER-FINALS", 4: "SEMI-FINALS", 2: "THE GRAND FINAL" };
+
+        function update() {
+            if (index < currentRound.length) {
+                const c1 = currentRound[index];
+                const c2 = currentRound[index + 1];
+                document.getElementById('round-title').innerText = roundNames[currentRound.length] || "TOURNAMENT";
+                document.getElementById('left-name').innerText = c1.name;
+                document.getElementById('left-desc').innerText = c1.desc;
+                document.getElementById('right-name').innerText = c2.name;
+                document.getElementById('right-desc').innerText = c2.desc;
+                resetArena();
+            }
+        }
+
+        function resetArena() {
+            const leftChar = document.getElementById('left-char');
+            const rightChar = document.getElementById('right-char');
+            leftChar.style.backgroundImage = `url('assets/${currentRound[index].img_idle}')`;
+            rightChar.style.backgroundImage = `url('assets/${currentRound[index+1].img_idle}')`;
+            leftChar.className = 'character';
+            rightChar.className = 'character';
+            leftChar.style.left = "50px";
+            rightChar.style.right = "50px";
+            leftChar.style.filter = "none";
+            rightChar.style.filter = "none";
+            leftChar.style.transform = "none";
+            rightChar.style.transform = "scaleX(-1)"; 
+        }
+
+        function hoverChar(side, isHovering) {
+            const char = document.getElementById(side + '-char');
+            const candidate = side === 'left' ? currentRound[index] : currentRound[index+1];
+            if (isHovering) {
+                char.style.backgroundImage = `url('assets/${candidate.img_walk}')`;
+                if(side === 'left') char.style.left = "200px";
+                else char.style.right = "200px";
+            } else {
+                char.style.backgroundImage = `url('assets/${candidate.img_idle}')`;
+                if(side === 'left') char.style.left = "50px";
+                else char.style.right = "50px";
+            }
+        }
+
+        function select(side) {
+            const winnerIdx = side === 'left' ? index : index + 1;
+            const loserIdx = side === 'left' ? index + 1 : index;
+            const winner = currentRound[winnerIdx];
+            const winnerChar = document.getElementById(side + '-char');
+            const loserChar = document.getElementById((side === 'left' ? 'right' : 'left') + '-char');
+
+            winnerChar.style.backgroundImage = `url('assets/${winner.img_attack}')`;
+            winnerChar.classList.add('attack-effect');
+            
+            if(side === 'right') {
+                winnerChar.style.transform = "scaleX(-1)";
+            }
+            
+            if(side === 'left') winnerChar.style.left = "300px";
+            else winnerChar.style.right = "300px";
+
+            loserChar.classList.add('defeat-effect');
+
+            nextRound.push(winner);
+            index += 2;
+
+            setTimeout(() => {
+                if (index >= currentRound.length) {
+                    if (nextRound.length === 1) { finish(nextRound[0]); } 
+                    else { 
+                        currentRound = [...nextRound]; 
+                        nextRound = []; 
+                        index = 0; 
+                        update(); 
+                    }
+                } else { update(); }
+            }, 1200);
+        }
+
+        function finish(winner) {
+            document.getElementById('game-layout').style.display = 'none';
+            document.getElementById('final-screen').style.display = 'block';
+            document.getElementById('winner-name').innerText = winner.name;
+            fetch(scriptURL, { 
+                method: 'POST', mode: 'no-cors', 
+                body: JSON.stringify({ winner: winner.name, status: "CHAMPION" }) 
+            });
+        }
+
+        update();
+    </script>
+</body>
+</html>
