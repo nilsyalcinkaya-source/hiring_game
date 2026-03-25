@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hiring Game: A little survey about hiring process choices.</title>
+    <title>Hiring Maze: Research Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -20,17 +20,8 @@
         }
 
         #header-container { margin-bottom: 20px; }
-        h1 { 
-            font-size: 28px; 
-            color: #00ff00; 
-            text-shadow: 2px 2px #000;
-            margin: 0;
-        }
-        p.subtitle { 
-            font-size: 18px; 
-            color: #aaaaaa; 
-            margin-top: 10px; 
-        }
+        h1 { font-size: 28px; color: #00ff00; text-shadow: 2px 2px #000; margin: 0; }
+        p.subtitle { font-size: 18px; color: #aaaaaa; margin-top: 10px; }
 
         #arena { 
             position: relative; 
@@ -53,10 +44,7 @@
         }
         
         #left-char { left: 50px; }
-        #right-char { 
-            right: 50px; 
-            transform: scaleX(-1); 
-        }     
+        #right-char { right: 50px; transform: scaleX(-1); }     
 
         #cards-container { 
             display: flex; 
@@ -85,28 +73,11 @@
             transform: translateY(-5px);
         }
 
-        h2 { 
-            font-size: 22px; 
-            color: #ff00ff; 
-            margin: 0 0 15px 0; 
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+        h2 { font-size: 22px; color: #ff00ff; margin: 0 0 15px 0; font-weight: 700; text-transform: uppercase; }
+        .desc { font-size: 17px; line-height: 1.5; color: #ffffff; font-weight: 400; }
 
-        .desc { 
-            font-size: 17px; 
-            line-height: 1.5; 
-            color: #ffffff; 
-            font-weight: 400;
-        }
-
-        .selected-card {
-            border-color: #ff00ff !important;
-            box-shadow: 0 0 30px #ff00ff !important;
-        }
-
+        .selected-card { border-color: #ff00ff !important; box-shadow: 0 0 30px #ff00ff !important; }
         .attack-effect { filter: brightness(1.3) !important; z-index: 10 !important; }
-        
         .defeat-effect { 
             opacity: 0; 
             transform: translateY(-40px) rotate(20deg) scale(0.7) !important; 
@@ -114,57 +85,24 @@
             transition: 0.6s ease-in;
         }
 
-        #final-screen { 
-            display: none; 
-            border: 8px double #ff00ff; 
-            padding: 40px; 
-            width: 600px; 
-            margin: 0 auto; 
-            background: #000; 
-        }
-
+        #final-screen { display: none; border: 8px double #ff00ff; padding: 40px; width: 600px; margin: 0 auto; background: #000; }
         button {
-            font-family: 'Courier Prime', monospace;
-            font-weight: 700;
-            font-size: 18px;
-            padding: 12px 25px;
-            cursor: pointer;
-            background: #00ff00;
-            border: none;
-            color: #000;
-            margin-top: 20px;
+            font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 18px;
+            padding: 12px 25px; cursor: pointer; background: #00ff00; border: none; color: #000; margin-top: 20px;
         }
         button:hover { background: #ff00ff; color: #fff; }
 
-        /* Mobil Uyum (Responsive) Düzenlemeleri */
         @media (max-width: 768px) {
-            body {
-                height: auto;
-                min-height: 100vh;
-                overflow-y: auto;
-                padding: 20px 0;
-                justify-content: flex-start;
-            }
+            body { height: auto; min-height: 100vh; overflow-y: auto; padding: 20px 0; justify-content: flex-start; }
             #arena { width: 100%; height: 160px; }
             .character { width: 100px; height: 130px; }
-            #cards-container { 
-                width: 100%; 
-                flex-direction: column; 
-                align-items: center; 
-                gap: 15px; 
-                margin-top: 20px; 
-            }
-            .candidate-card { 
-                width: 85%; 
-                padding: 15px; 
-            }
-            .candidate-card:hover { transform: none; } 
+            #cards-container { width: 100%; flex-direction: column; align-items: center; gap: 15px; margin-top: 20px; }
+            .candidate-card { width: 85%; padding: 15px; }
             h1 { font-size: 20px; }
             p.subtitle { font-size: 14px; padding: 0 10px; }
-            h2 { font-size: 18px; margin-bottom: 10px; }
+            h2 { font-size: 18px; }
             .desc { font-size: 15px; }
             #final-screen { width: 85%; padding: 25px; }
-            #winner-name { font-size: 24px !important; }
         }
     </style>
 </head>
@@ -194,10 +132,10 @@
     </div>
 
     <div id="final-screen">
-        <h1 style="color: #00ff00;">HERE IS THE TOURNAMENT CHAMPION:</h1>
+        <h1 style="color: #00ff00;">TOURNAMENT CHAMPION</h1>
         <h2 id="winner-name" style="font-size: 32px; margin: 20px 0;"></h2>
-        <p style="font-size: 18px; line-height: 1.6;">Our king/gueen made the decision!<br>Congratulations...</p>
-        <button onclick="location.reload()">RESTART TOURNAMENT?</button>
+        <p style="font-size: 18px; line-height: 1.6;">The evaluation is complete.<br>Every choice has been recorded for research.</p>
+        <button onclick="location.reload()">RESTART TOURNAMENT</button>
     </div>
 
     <script>
@@ -218,22 +156,19 @@
         let nextRound = [];
         let index = 0;
         let roundNames = { 8: "QUARTER-FINALS", 4: "SEMI-FINALS", 2: "THE GRAND FINAL" };
+        let isProcessing = false;
 
-        function isMobile() {
-            return window.innerWidth <= 768;
-        }
+        function isMobile() { return window.innerWidth <= 768; }
 
         function update() {
             if (index < currentRound.length) {
                 const c1 = currentRound[index];
                 const c2 = currentRound[index + 1];
-
                 document.getElementById('round-title').innerText = roundNames[currentRound.length] || "TOURNAMENT";
                 document.getElementById('left-name').innerText = c1.name;
                 document.getElementById('left-desc').innerText = c1.desc;
                 document.getElementById('right-name').innerText = c2.name;
                 document.getElementById('right-desc').innerText = c2.desc;
-
                 resetArena();
             }
         }
@@ -241,60 +176,53 @@
         function resetArena() {
             const leftChar = document.getElementById('left-char');
             const rightChar = document.getElementById('right-char');
-            
             leftChar.style.backgroundImage = `url('assets/${currentRound[index].img_idle}')`;
             rightChar.style.backgroundImage = `url('assets/${currentRound[index+1].img_idle}')`;
-            
-            leftChar.className = 'character';
-            rightChar.className = 'character';
-            
+            leftChar.className = 'character'; rightChar.className = 'character';
             const baseDist = isMobile() ? "10px" : "50px";
-            leftChar.style.left = baseDist;
-            rightChar.style.right = baseDist;
-            leftChar.style.filter = "none";
-            rightChar.style.filter = "none";
-            leftChar.style.transform = "none";
-            rightChar.style.transform = "scaleX(-1)"; 
+            leftChar.style.left = baseDist; rightChar.style.right = baseDist;
+            leftChar.style.filter = "none"; rightChar.style.filter = "none";
+            leftChar.style.transform = "none"; rightChar.style.transform = "scaleX(-1)"; 
         }
 
         function hoverChar(side, isHovering) {
+            if (isProcessing) return;
             const char = document.getElementById(side + '-char');
             const candidate = side === 'left' ? currentRound[index] : currentRound[index+1];
-            
             const baseDist = isMobile() ? "10px" : "50px";
             const hoverDist = isMobile() ? "20%" : "180px";
-
             if (isHovering) {
                 char.style.backgroundImage = `url('assets/${candidate.img_walk}')`;
-                if(side === 'left') char.style.left = hoverDist;
-                else char.style.right = hoverDist;
+                if(side === 'left') char.style.left = hoverDist; else char.style.right = hoverDist;
             } else {
                 char.style.backgroundImage = `url('assets/${candidate.img_idle}')`;
-                if(side === 'left') char.style.left = baseDist;
-                else char.style.right = baseDist;
+                if(side === 'left') char.style.left = baseDist; else char.style.right = baseDist;
             }
         }
 
         function select(side) {
-            const winnerIdx = side === 'left' ? index : index + 1;
-            const loserSide = side === 'left' ? 'right' : 'left';
-            const winner = currentRound[winnerIdx];
-            
-            const winnerChar = document.getElementById(side + '-char');
-            const loserChar = document.getElementById(loserSide + '-char');
-            const selectedCard = document.getElementById(side + '-card');
+            if (isProcessing) return;
+            isProcessing = true;
 
+            const winnerIdx = side === 'left' ? index : index + 1;
+            const loserIdx = side === 'left' ? index + 1 : index;
+            const winner = currentRound[winnerIdx];
+            const loser = currentRound[loserIdx];
+            const roundName = roundNames[currentRound.length];
+
+            // Araştırma Verisini Hemen Gönder
+            sendDataToSheets(winner.name, loser.name, roundName, "MATCH_RESULT");
+
+            const winnerChar = document.getElementById(side + '-char');
+            const loserChar = document.getElementById((side === 'left' ? 'right' : 'left') + '-char');
+            const selectedCard = document.getElementById(side + '-card');
             const attackDist = isMobile() ? "35%" : "280px";
 
             selectedCard.classList.add('selected-card');
             winnerChar.style.backgroundImage = `url('assets/${winner.img_attack}')`;
             winnerChar.classList.add('attack-effect');
-            
             if(side === 'right') winnerChar.style.transform = "scaleX(-1)";
-            
-            if(side === 'left') winnerChar.style.left = attackDist;
-            else winnerChar.style.right = attackDist;
-
+            if(side === 'left') winnerChar.style.left = attackDist; else winnerChar.style.right = attackDist;
             loserChar.classList.add('defeat-effect');
 
             nextRound.push(winner);
@@ -302,171 +230,34 @@
 
             setTimeout(() => {
                 selectedCard.classList.remove('selected-card');
+                isProcessing = false;
                 if (index >= currentRound.length) {
                     if (nextRound.length === 1) { finish(nextRound[0]); } 
-                    else { 
-                        currentRound = [...nextRound]; 
-                        nextRound = []; 
-                        index = 0; 
-                        update(); 
-                    }
+                    else { currentRound = [...nextRound]; nextRound = []; index = 0; update(); }
                 } else { update(); }
             }, 1200);
+        }
+
+        function sendDataToSheets(winner, loser, round, status) {
+            fetch(scriptURL, { 
+                method: 'POST', mode: 'no-cors', 
+                body: JSON.stringify({ 
+                    winner: winner, 
+                    loser: loser, 
+                    round: round, 
+                    status: status 
+                }) 
+            });
         }
 
         function finish(winner) {
             document.getElementById('game-layout').style.display = 'none';
             document.getElementById('final-screen').style.display = 'block';
             document.getElementById('winner-name').innerText = winner.name;
-
-            fetch(scriptURL, { 
-                method: 'POST', mode: 'no-cors', 
-                body: JSON.stringify({ winner: winner.name, status: "CHAMPION" }) 
-            });
+            sendDataToSheets(winner.name, "N/A", "FINAL", "CHAMPION");
         }
 
         update();
-
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxlGvKgLbutYrPnQQrlTkMAvB1n2RjNyKt5zN8vwTenzuxt6dCBDtQaucE2gQMsdRZv/exec';
-
-const candidates = [
-    { name: "The Gap Strategist", desc: "12+ years of work experience, but 3-year parental leave.", img_idle: "Ancient_Idle_MiniCavalierMan.gif", img_attack: "Ancient_Attack1_MiniCavalierMan.gif", img_walk: "Ancient_Walk_MiniCavalierMan.gif" },
-    { name: "The Continuous Mid-Weight", desc: "5 years uninterrupted experience, but didn't face real challanges.", img_idle: "Common_Idle_MiniCavalierMan.gif", img_attack: "Common_Attack1_MiniCavalierMan.gif", img_walk: "Common_Walk_MiniCavalierMan.gif" },
-    { name: "The Award-Winner", desc: "Multiple awards, strong creative vision, but not a technically capable 'doer'.", img_idle: "Epic_Idle_MiniCavalierMan.gif", img_attack: "Epic_Attack1_MiniCavalierMan.gif", img_walk: "Epic_Walk_MiniCavalierMan.gif" },
-    { name: "The Technical Tool-Master", desc: "Expert mastery of advanced technical tools and software, but not a visionary.", img_idle: "Epic_2_Idle_MiniCavalierMan.gif", img_attack: "Epic_2_Attack1_MiniCavalierMan.gif", img_walk: "Epic_2_Walk_MiniCavalierMan.gif" },
-    { name: "The Corporate Veteran", desc: "Experience in English spoken international companies, but not in smaller, local companies; doesn't know the local language.", img_idle: "Legendary_Idle_MiniCavalierMan.gif", img_attack: "Legendary_Attack1_MiniCavalierMan.gif", img_walk: "Legendary_Walk_MiniCavalierMan.gif" },
-    { name: "The AI Visionary", desc: "Expert in AI-powered tools, but can't manually use a technical app/write code.", img_idle: "Legendary_2_Idle_MiniCavalierMan.gif", img_attack: "Legendary_2_Attack1_MiniCavalierMan.gif", img_walk: "Legendary_2_Walk_MiniCavalierMan.gif" },
-    { name: "The Hybrid Strategist", desc: "Versatile profile combining different work expertise, but not an expert in any of them.", img_idle: "Rare_Idle_MiniCavalierMan.gif", img_attack: "Rare_Attack1_MiniCavalierMan.gif", img_walk: "Rare_Walk_MiniCavalierMan.gif" },
-    { name: "The Local Junior", desc: "Native language, deep understanding of cultural context, but a new grad; almost no job experience.", img_idle: "Uncommon_Idle_MiniCavalierMan.gif", img_attack: "Uncommon_Attack1_MiniCavalierMan.gif", img_walk: "Uncommon_Walk_MiniCavalierMan.gif" }
-];
-
-let currentRound = [...candidates].sort(() => 0.5 - Math.random());
-let nextRound = [];
-let index = 0;
-let roundNames = { 8: "QUARTER-FINALS", 4: "SEMI-FINALS", 2: "THE GRAND FINAL" };
-
-// Tıklama kilitleri (Buralar eklendi)
-let isProcessing = false; 
-let isFinished = false;
-
-function isMobile() {
-    return window.innerWidth <= 768;
-}
-
-function update() {
-    if (index < currentRound.length) {
-        const c1 = currentRound[index];
-        const c2 = currentRound[index + 1];
-
-        document.getElementById('round-title').innerText = roundNames[currentRound.length] || "TOURNAMENT";
-        document.getElementById('left-name').innerText = c1.name;
-        document.getElementById('left-desc').innerText = c1.desc;
-        document.getElementById('right-name').innerText = c2.name;
-        document.getElementById('right-desc').innerText = c2.desc;
-
-        resetArena();
-    }
-}
-
-function resetArena() {
-    const leftChar = document.getElementById('left-char');
-    const rightChar = document.getElementById('right-char');
-    
-    leftChar.style.backgroundImage = `url('assets/${currentRound[index].img_idle}')`;
-    rightChar.style.backgroundImage = `url('assets/${currentRound[index+1].img_idle}')`;
-    
-    leftChar.className = 'character';
-    rightChar.className = 'character';
-    
-    const baseDist = isMobile() ? "10px" : "50px";
-    leftChar.style.left = baseDist;
-    rightChar.style.right = baseDist;
-    leftChar.style.filter = "none";
-    rightChar.style.filter = "none";
-    leftChar.style.transform = "none";
-    rightChar.style.transform = "scaleX(-1)"; 
-}
-
-function hoverChar(side, isHovering) {
-    if (isProcessing) return; // Animasyon varken hover efekti çalışmasın
-    
-    const char = document.getElementById(side + '-char');
-    const candidate = side === 'left' ? currentRound[index] : currentRound[index+1];
-    
-    const baseDist = isMobile() ? "10px" : "50px";
-    const hoverDist = isMobile() ? "20%" : "180px";
-
-    if (isHovering) {
-        char.style.backgroundImage = `url('assets/${candidate.img_walk}')`;
-        if(side === 'left') char.style.left = hoverDist;
-        else char.style.right = hoverDist;
-    } else {
-        char.style.backgroundImage = `url('assets/${candidate.img_idle}')`;
-        if(side === 'left') char.style.left = baseDist;
-        else char.style.right = baseDist;
-    }
-}
-
-function select(side) {
-    if (isProcessing) return; // Eğer halihazırda bir tıklama işleniyorsa, diğerlerini yok say (Kilit)
-    isProcessing = true; // Sistemi kilitle
-
-    const winnerIdx = side === 'left' ? index : index + 1;
-    const loserSide = side === 'left' ? 'right' : 'left';
-    const winner = currentRound[winnerIdx];
-    
-    const winnerChar = document.getElementById(side + '-char');
-    const loserChar = document.getElementById(loserSide + '-char');
-    const selectedCard = document.getElementById(side + '-card');
-
-    const attackDist = isMobile() ? "35%" : "280px";
-
-    selectedCard.classList.add('selected-card');
-    winnerChar.style.backgroundImage = `url('assets/${winner.img_attack}')`;
-    winnerChar.classList.add('attack-effect');
-    
-    if(side === 'right') winnerChar.style.transform = "scaleX(-1)";
-    
-    if(side === 'left') winnerChar.style.left = attackDist;
-    else winnerChar.style.right = attackDist;
-
-    loserChar.classList.add('defeat-effect');
-
-    nextRound.push(winner);
-    index += 2;
-
-    setTimeout(() => {
-        selectedCard.classList.remove('selected-card');
-        isProcessing = false; // Animasyon bitti, kilidi aç
-        
-        if (index >= currentRound.length) {
-            if (nextRound.length === 1) { finish(nextRound[0]); } 
-            else { 
-                currentRound = [...nextRound]; 
-                nextRound = []; 
-                index = 0; 
-                update(); 
-            }
-        } else { update(); }
-    }, 1200);
-}
-
-function finish(winner) {
-    if (isFinished) return; // Eğer veri zaten gönderildiyse tekrar gönderme
-    isFinished = true;
-
-    document.getElementById('game-layout').style.display = 'none';
-    document.getElementById('final-screen').style.display = 'block';
-    document.getElementById('winner-name').innerText = winner.name;
-
-    fetch(scriptURL, { 
-        method: 'POST', mode: 'no-cors', 
-        body: JSON.stringify({ winner: winner.name, status: "CHAMPION" }) 
-    });
-}
-
-update();
-        
     </script>
 </body>
 </html>
