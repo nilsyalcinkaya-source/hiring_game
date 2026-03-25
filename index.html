@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hiring Maze: Research Edition</title>
+    <title>Hiring Game: A research about winner hiring profiles. </title>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -83,8 +83,8 @@
 <body>
 
     <div id="role-overlay">
-        <h1>SELECT YOUR EXPERTISE</h1>
-        <p class="subtitle" style="margin-bottom:20px;">To start the research, please select your role.</p>
+        <h1>SELECT YOUR ROLE</h1>
+        <p class="subtitle" style="margin-bottom:20px;">In other words, tell me about yourself... :) </p>
         <div>
             <button onclick="startWithRole('HR Expert')">HR EXPERT</button>
             <button onclick="startWithRole('UX Designer / Lead')">UX DESIGN / LEAD</button>
@@ -116,15 +116,14 @@
     </div>
 
     <div id="final-screen">
-        <h1 style="color: #00ff00;">TOURNAMENT CHAMPION</h1>
+        <h1 style="color: #00ff00;">TOURNAMENT CHAMPION:</h1>
         <h2 id="winner-name" style="font-size: 32px; margin: 20px 0;"></h2>
-        <p style="font-size: 18px; line-height: 1.6;">The evaluation is complete.<br>Results saved for professional analysis.</p>
-        <button onclick="location.reload()">RESTART TOURNAMENT</button>
+        <p style="font-size: 18px; line-height: 1.6;">Our majesty made their choice...<br>Congratulations!</p>
+        <button onclick="location.reload()">RESTART TOURNAMENT?</button>
     </div>
 
     <script>
-        const scriptURL = 'BURAYA_YENI_DEPLOY_URL_GELECEK'; // Google Apps Script URL'ni buraya yapıştır!
-
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxThkNd09SojK-jyuDO0aVQBJe7L7_JtPM4lN_hS0kfNcAmemMmDIOzEdXBUvU25IU/exec'; 
         const candidates = [
             { name: "The Gap Strategist", desc: "12+ years of work experience, but 3-year parental leave.", img_idle: "Ancient_Idle_MiniCavalierMan.gif", img_attack: "Ancient_Attack1_MiniCavalierMan.gif", img_walk: "Ancient_Walk_MiniCavalierMan.gif" },
             { name: "The Continuous Mid-Weight", desc: "5 years uninterrupted experience, but didn't face real challanges.", img_idle: "Common_Idle_MiniCavalierMan.gif", img_attack: "Common_Attack1_MiniCavalierMan.gif", img_walk: "Common_Walk_MiniCavalierMan.gif" },
