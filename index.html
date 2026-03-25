@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hiring Game: A research about winner hiring profiles. </title>
+    <title>Hiring Game: A research about winner hiring profiles.</title>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -12,7 +12,6 @@
             justify-content: center; height: 100vh; overflow: hidden;
         }
 
-        /* Giriş Ekranı (Role Selection) */
         #role-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: #1a1a1a; z-index: 1000; display: flex; 
@@ -68,7 +67,6 @@
         }
         button:hover { background: #ff00ff; color: #fff; }
 
-        /* Mobil Düzen */
         @media (max-width: 768px) {
             body { height: auto; min-height: 100vh; overflow-y: auto; padding: 20px 0; justify-content: flex-start; }
             #arena { width: 100%; height: 160px; }
@@ -94,7 +92,7 @@
 
     <div id="game-layout">
         <div id="header-container">
-            <h1 id="round-title">QUARTER-FINALS</h1>
+            <h1 id="round-title">ROUND OF 16</h1>
             <p class="subtitle">Whom beats whom? Please choose a knight, your majesty...</p>
         </div>
 
@@ -124,21 +122,37 @@
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxThkNd09SojK-jyuDO0aVQBJe7L7_JtPM4lN_hS0kfNcAmemMmDIOzEdXBUvU25IU/exec'; 
+        
         const candidates = [
-            { name: "The Gap Strategist", desc: "12+ years of work experience, but 3-year parental leave.", img_idle: "Ancient_Idle_MiniCavalierMan.gif", img_attack: "Ancient_Attack1_MiniCavalierMan.gif", img_walk: "Ancient_Walk_MiniCavalierMan.gif" },
-            { name: "The Continuous Mid-Weight", desc: "5 years uninterrupted experience, but didn't face real challanges.", img_idle: "Common_Idle_MiniCavalierMan.gif", img_attack: "Common_Attack1_MiniCavalierMan.gif", img_walk: "Common_Walk_MiniCavalierMan.gif" },
-            { name: "The Award-Winner", desc: "Multiple awards, strong creative vision, but not a technically capable 'doer'.", img_idle: "Epic_Idle_MiniCavalierMan.gif", img_attack: "Epic_Attack1_MiniCavalierMan.gif", img_walk: "Epic_Walk_MiniCavalierMan.gif" },
-            { name: "The Technical Tool-Master", desc: "Expert mastery of advanced technical tools and software, but not a visionary.", img_idle: "Epic_2_Idle_MiniCavalierMan.gif", img_attack: "Epic_2_Attack1_MiniCavalierMan.gif", img_walk: "Epic_2_Walk_MiniCavalierMan.gif" },
-            { name: "The Corporate Veteran", desc: "An experienced professional worked in international companies, but not fluent in local language and native work culture.", img_idle: "Legendary_Idle_MiniCavalierMan.gif", img_attack: "Legendary_Attack1_MiniCavalierMan.gif", img_walk: "Legendary_Walk_MiniCavalierMan.gif" },
-            { name: "The AI Visionary", desc: "Expert in AI-powered tools, but can't manually use a technical app/write code.", img_idle: "Legendary_2_Idle_MiniCavalierMan.gif", img_attack: "Legendary_2_Attack1_MiniCavalierMan.gif", img_walk: "Legendary_2_Walk_MiniCavalierMan.gif" },
-            { name: "The Hybrid Strategist", desc: "Versatile profile combining different work expertise, but not an expert in any of them.", img_idle: "Rare_Idle_MiniCavalierMan.gif", img_attack: "Rare_Attack1_MiniCavalierMan.gif", img_walk: "Rare_Walk_MiniCavalierMan.gif" },
-            { name: "The Local Junior", desc: "Native language, deep understanding of cultural context, but a new grad; almost no job experience.", img_idle: "Uncommon_Idle_MiniCavalierMan.gif", img_attack: "Uncommon_Attack1_MiniCavalierMan.gif", img_walk: "Uncommon_Walk_MiniCavalierMan.gif" }
+            { name: "The Veteran Soul", desc: "10+ years of total experience, but zero years in this job title.", img_idle: "Ancient_Idle_MiniCavalierMan.gif", img_attack: "Ancient_Attack1_MiniCavalierMan.gif", img_walk: "Ancient_Walk_MiniCavalierMan.gif" },
+            { name: "The Title specialist", desc: "3 years of experience, but only within this specific title.", img_idle: "Uncommon_Idle_MiniCavalierMan.gif", img_attack: "Uncommon_Attack1_MiniCavalierMan.gif", img_walk: "Uncommon_Walk_MiniCavalierMan.gif" },
+            
+            { name: "The Gap Strategist", desc: "10+ years of history, but a 3-year parenting gap.", img_idle: "Ancient_Idle_MiniCavalierMan.gif", img_attack: "Ancient_Attack1_MiniCavalierMan.gif", img_walk: "Ancient_Walk_MiniCavalierMan.gif" },
+            { name: "The Linear Mid-Weight", desc: "Continuous employment, but only 3-5 year work experience.", img_idle: "Common_Idle_MiniCavalierMan.gif", img_attack: "Common_Attack1_MiniCavalierMan.gif", img_walk: "Common_Walk_MiniCavalierMan.gif" },
+            
+            { name: "The Award-Winner", desc: "Award-winning creativity, but weak in technical execution.", img_idle: "Epic_Idle_MiniCavalierMan.gif", img_attack: "Epic_Attack1_MiniCavalierMan.gif", img_walk: "Epic_Walk_MiniCavalierMan.gif" },
+            { name: "The Tool-Master", desc: "Strong technical execution, but lacks original creative vision.", img_idle: "Epic_2_Idle_MiniCavalierMan.gif", img_attack: "Epic_2_Attack1_MiniCavalierMan.gif", img_walk: "Epic_2_Walk_MiniCavalierMan.gif" },
+            
+            { name: "The Conceptualist", desc: "Rich portfolio, but consists mostly of conceptual projects.", img_idle: "Rare_Idle_MiniCavalierMan.gif", img_attack: "Rare_Attack1_MiniCavalierMan.gif", img_walk: "Rare_Walk_MiniCavalierMan.gif" },
+            { name: "The Shipper", desc: "Shipped products, but lacks a visionary or diverse portfolio.", img_idle: "Legendary_Idle_MiniCavalierMan.gif", img_attack: "Legendary_Attack1_MiniCavalierMan.gif", img_walk: "Legendary_Walk_MiniCavalierMan.gif" },
+            
+            { name: "The Startup Agile", desc: "Startup and freelance agility, but no corporate experience.", img_idle: "Rare_Idle_MiniCavalierMan.gif", img_attack: "Rare_Attack1_MiniCavalierMan.gif", img_walk: "Rare_Walk_MiniCavalierMan.gif" },
+            { name: "The Corporate Guard", desc: "Corporate discipline, but lacks startup-level flexibility.", img_idle: "Legendary_Idle_MiniCavalierMan.gif", img_attack: "Legendary_Attack1_MiniCavalierMan.gif", img_walk: "Legendary_Walk_MiniCavalierMan.gif" },
+            
+            { name: "The Hybrid Voyager", desc: "Diverse background, but lacks a linear career path.", img_idle: "Rare_Idle_MiniCavalierMan.gif", img_attack: "Rare_Attack1_MiniCavalierMan.gif", img_walk: "Rare_Walk_MiniCavalierMan.gif" },
+            { name: "The Specialist", desc: "Specialized linear path, but lacks a broad strategic view.", img_idle: "Common_Idle_MiniCavalierMan.gif", img_attack: "Common_Attack1_MiniCavalierMan.gif", img_walk: "Common_Walk_MiniCavalierMan.gif" },
+            
+            { name: "The Self-Taught", desc: "Constant self-learner, but no formal degree in this field.", img_idle: "Uncommon_Idle_MiniCavalierMan.gif", img_attack: "Uncommon_Attack1_MiniCavalierMan.gif", img_walk: "Uncommon_Walk_MiniCavalierMan.gif" },
+            { name: "The Academic", desc: "Formal degree in the field, but lacks recent learning effort.", img_idle: "Epic_Idle_MiniCavalierMan.gif", img_attack: "Epic_Attack1_MiniCavalierMan.gif", img_walk: "Epic_Walk_MiniCavalierMan.gif" },
+            
+            { name: "The Global Citizen", desc: "Fluent English for global roles, but weak local language skills.", img_idle: "Legendary_2_Idle_MiniCavalierMan.gif", img_attack: "Legendary_2_Attack1_MiniCavalierMan.gif", img_walk: "Legendary_2_Walk_MiniCavalierMan.gif" },
+            { name: "The Local Hero", desc: "Native local speaker, but no experience in global teams.", img_idle: "Uncommon_Idle_MiniCavalierMan.gif", img_attack: "Uncommon_Attack1_MiniCavalierMan.gif", img_walk: "Uncommon_Walk_MiniCavalierMan.gif" }
         ];
 
         let currentRound = [...candidates].sort(() => 0.5 - Math.random());
         let nextRound = [];
         let index = 0;
-        let roundNames = { 8: "QUARTER-FINALS", 4: "SEMI-FINALS", 2: "THE GRAND FINAL" };
+        let roundNames = { 16: "ROUND OF 16", 8: "QUARTER-FINALS", 4: "SEMI-FINALS", 2: "THE GRAND FINAL" };
         let isProcessing = false;
         let userRole = "";
 
@@ -200,7 +214,6 @@
             const loser = currentRound[loserIdx];
             const roundName = roundNames[currentRound.length];
 
-            // Veriyi Gönder
             sendDataToSheets(winner.name, loser.name, roundName, "MATCH_RESULT");
 
             const winnerChar = document.getElementById(side + '-char');
