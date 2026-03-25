@@ -78,31 +78,27 @@
             transition: all 0.2s ease;
         }
 
-        /* Kart Üzerine Gelince (Hover) Ayarları */
         .candidate-card:hover { 
-            border-color: #ff00ff; /* Çerçeve pembe olur */
+            border-color: #ff00ff; 
             box-shadow: 0 0 20px #ff00ff;
             transform: translateY(-5px);
         }
 
-        /* Kart Başlığı (Aday İsmi) */
         h2 { 
             font-size: 22px; 
-            color: #ff00ff; /* Başlık pembe */
+            color: #ff00ff; 
             margin: 0 0 15px 0; 
             font-weight: 700;
             text-transform: uppercase;
         }
 
-        /* Kart Açıklaması */
         .desc { 
             font-size: 17px; 
             line-height: 1.5; 
-            color: #ffffff; /* Yazılar düz beyaz, okunaklı */
+            color: #ffffff; 
             font-weight: 400;
         }
 
-        /* Seçilince Uygulanacak Klas (JS ile ekleniyor) */
         .selected-card {
             border-color: #ff00ff !important;
             box-shadow: 0 0 30px #ff00ff !important;
@@ -248,7 +244,6 @@
             const loserChar = document.getElementById(loserSide + '-char');
             const selectedCard = document.getElementById(side + '-card');
 
-            // Görsel efektler
             selectedCard.classList.add('selected-card');
             winnerChar.style.backgroundImage = `url('assets/${winner.img_attack}')`;
             winnerChar.classList.add('attack-effect');
